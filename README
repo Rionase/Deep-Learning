@@ -1,10 +1,11 @@
 ## NEED TO BE INSTALLED LIBRARY
 
 ```bash
-pip install tensorflow opencv-python matplotlib
+pip install tensorflow opencv-python matplotlib psutil
 ```
 
 1. tensorflow
 2. opencv-python
 3. matplotlib
 4. Pillow
+5. psutil
