@@ -1,9 +1,11 @@
-from utils.RemoveDodgyImage import RemoveDodgyImage
+from utils.PrepocessingData import RemoveDodgyImage, OrganizeDataset
 from utils.ModelingAndTrain import ModelingAndTrain
-from utils.PredictImage import predict_image
+from utils.PredictImage import PredictImage
+
+OrganizeDataset()
 
 # RemoveDodgyImage()
 
 # ModelingAndTrain()
 
-predict_image("test_data/kertas.jpg")
+# PredictImage("test_data/kertas.jpg")

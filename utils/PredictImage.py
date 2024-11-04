@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 
-def preprocess_image(image_path):
+def PrepocessImage(image_path):
     # Load the image
     img = Image.open(image_path)
 
@@ -22,9 +22,9 @@ def preprocess_image(image_path):
 
     return img_array
 
-def predict_image(image_path):
+def PredictImage(image_path):
     # Preprocess the image
-    img_array = preprocess_image(image_path)
+    img_array = PrepocessImage(image_path)
 
     model = load_model('models/imageclassifier.h5')
 
