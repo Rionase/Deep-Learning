@@ -3,6 +3,7 @@ from PIL import Image
 import numpy as np
 import os
 
+from utils.GetLastModel import GetLastModelFile
 
 def PrepocessImage(image_path):
     # Load the image
@@ -26,7 +27,7 @@ def PredictImage(image_path):
     # Preprocess the image
     img_array = PrepocessImage(image_path)
 
-    model = load_model('models/imageclassifier.h5')
+    model = load_model(f"models/{GetLastModelFile()}")
 
     # Make the prediction
     prediction = model.predict(img_array)

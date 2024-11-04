@@ -4,8 +4,37 @@ import numpy as np
 from matplotlib import pyplot as plt
 import math
 
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+
+from utils.GetLastModel import GetLastModelFile, GetLastModelCount
+
+def getModel () :
+
+    # NO SAVED MODELS FOUND, CREATE NEW MODELS
+    if ( GetLastModelFile() == False ) :
+
+        # CREATING CNN MODEL
+        model = Sequential()
+
+        model.add(Conv2D(16, (3,3), 1, activation='relu', input_shape=(256,256,3)))
+        model.add(MaxPooling2D())
+        model.add(Conv2D(32, (3,3), 1, activation='relu'))
+        model.add(MaxPooling2D())
+        model.add(Conv2D(16, (3,3), 1, activation='relu'))
+        model.add(MaxPooling2D())
+        model.add(Flatten())
+        model.add(Dense(256, activation='relu'))
+        model.add(Dense(1, activation='sigmoid'))
+
+        model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
+        return model
+        
+    else :
+        model = load_model(f"models/{GetLastModelFile()}")
+        model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
+        return model
+
 
 def ModelingAndTrain () :
     # GENERATE AND PREPOCESSING DATASET 
@@ -30,22 +59,8 @@ def ModelingAndTrain () :
     val = data.skip(train_size).take(val_size)
     test = data.skip(train_size + val_size).take(test_size)
 
-    # CREATING CNN MODEL
-
-    model = Sequential()
-
-    model.add(Conv2D(16, (3,3), 1, activation='relu', input_shape=(256,256,3)))
-    model.add(MaxPooling2D())
-    model.add(Conv2D(32, (3,3), 1, activation='relu'))
-    model.add(MaxPooling2D())
-    model.add(Conv2D(16, (3,3), 1, activation='relu'))
-    model.add(MaxPooling2D())
-    model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
-    model.add(Dense(1, activation='sigmoid'))
-
-    model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
-
+    model = getModel()
+    
     # TRAIN THE MODEL
 
     logdir='logs'
@@ -67,4 +82,4 @@ def ModelingAndTrain () :
     plt.show()
 
     # SAVE GENERATED MODEL IN LOCAL FILE
-    model.save(os.path.join('models','imageclassifier.h5'))
+    model.save(os.path.join('models', f"model-{GetLastModelCount() + 1}.h5"))
